@@ -1,0 +1,38 @@
+{
+	"name": "sample-node-express",
+	"version": "1.0.0",
+	"description": "sample node.js express server",
+	"main": "server.js",
+	"scripts": {
+		"startp": "pm2 start ecosystem.config.js --env production",
+		"startd": "pm2 start ecosystem.config.js",
+		"reloadp": "pm2 reload ecosystem.config.js --env production && pm2 logs",
+		"reloadd": "pm2 reload ecosystem.config.js && pm2 logs",
+		"rp": "pm2 reload ecosystem.config.js --env production && pm2 logs",
+		"rd": "pm2 reload ecosystem.config.js && pm2 logs",
+		"pullp": "git pull origin master && npm run rp",
+		"push": "git add . && git commit -ma && git push origin master",
+		"dev": "supervisor server.js",
+		"pull": "git pull origin master && npm run reload",
+		"kill": "pm2 kill"
+	},
+	"author": "sjmarine97@gmail.com",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^1.4.0",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.1.4",
+		"ejs": "^3.1.9",
+		"express": "^4.18.2",
+		"express-fileupload": "^1.4.0",
+		"express-mysql-session": "^3.0.0",
+		"express-session": "^1.17.3",
+		"helmet": "^7.0.0",
+		"jsonwebtoken": "^9.0.0",
+		"mysql2": "^3.3.5",
+		"node-schedule": "^2.1.1",
+		"sequelize": "^6.32.0",
+		"sequelize-cli": "^6.6.1"
+	}
+}

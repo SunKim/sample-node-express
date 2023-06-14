@@ -1,0 +1,50 @@
+== 신규 프로젝트에서 활용시
+= 기본 설정파일 수정
+package.json의 name 및 version, script 수정
+ecosystem.config.js 의 app.name 수정. 배치서버이면 instances 1로 설정
+config.json(db 설정파일) 설정
+
+= 기본 실행파일 수정
+app.js
+	corsOptions, allowedOrigins 수정
+	세션 사용여부에 따른 변경
+	fileupload 사용여부에 따른 변경
+	필요시 router 추가
+	필요시 view 추가
+	배치 수행 관련 수정 - schedule()
+/models에 model 추가
+
+= 로컬개발시 (global하게 supervisor 설치 필요)
+supervisor server.js
+
+
+== 서버 배포시
+= git 관련 설정 및 소스 설치
+
+= gitignore에 포함된 파일 복사
+ecosystem.config.js
+config/config.json
+.env (포트 변경)
+
+= 서버 실행
+npm run rp
+
+
+== 본 프로젝트 설치 절차
+npm init으로 초기화 (기본파일을 index.js->server.js로 변경)
+express 설치
+axios 설치
+dotenv 설치
+cors 설치
+ejs 설치
+sequelize, sequelize-cli, mysql2 설치
+	npx sequelize init로 sequelize 초기화
+		자동으로 config, migrations, models, seeders 디렉토리 생성
+	config.json(db 설정파일) 설정
+helmet 설치
+express-session 설치
+express-fileupload 설치
+express-mysql-session 설치
+cookie-parser 설치
+jsonwebtoken 설치
+node-schedule 설치
