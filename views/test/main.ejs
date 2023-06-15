@@ -1,12 +1,72 @@
 <%
-	const testData = locals.testData
+	const sessUserData = locals.sessUserData
+	const viewData = locals.viewData
+	const users = locals.users
+	const usersPerDates = locals.usersPerDates
 %>
 
-<h1><%- testData.title %></h1>
+<!DOCTYPE html>
 
-<p>this is a test view :)</p>
-<p>the title above is from the server data.</p>
+<head>
+  <%- include('../common/common-head.ejs') %>
 
-<footer>
-  <p>sjmarine97@gmail.com</p>
-</footer>
+  <style type=text/css>
+    section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <h1><%- viewData.title %>, <%- sessUserData.userNm %></h1>
+
+    <p>this is a test view :)</p>
+    <p>the title above is from the server data.</p>
+
+    <button type="button" id="logout" onclick="javascript:location.href='/test/logout'">logout</button>
+  </section>
+
+  <section>
+    <h4>Users</h4>
+
+    <% users.forEach((user, i) => { %>
+    <p><%= user.userNm %></p>
+    <% }) %>
+
+    <h4>users Per Dates</h4>
+
+    <% usersPerDates.forEach((dt, i) => { %>
+    <p><%= dt.joinDt %>: <%= dt.userCnt %></p>
+    <% }) %>
+  </section>
+
+  <footer>
+    <p>AUTHOR. sjmarine97@gmail.com</p>
+  </footer>
+
+  <%- include('../common/common-script.ejs') %>
+
+  <script>
+    $(document).ready(function() {
+      setUi()
+      init()
+    })
+
+    // UI 설정
+    const setUi = () => {
+      // 
+    }
+
+    // 초기화
+    const init = () => {
+      // 
+    }
+  </script>
+</body>
+
+</html>

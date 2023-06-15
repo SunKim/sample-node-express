@@ -4,39 +4,20 @@ const http = require('http')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
+const csp = require('helmet-csp')
 const session = require('express-session')
 const path = require('path')
 const cors = require('cors')
+const fileUpload = require('express-fileupload')
+
+// cors
 const corsOptions = {
 	origin: ['https://hold-file.s3.ap-northeast-2.amazonaws.com', 'https://manage.clubhold.com', 'https://hold.hair', 'https://clubhold.com'],
 	credentials: true,
 }
 const allowedOrigins = ['https://hold-file.s3.ap-northeast-2.amazonaws.com', 'https://manage.clubhold.com', 'https://hold.hair', 'https://clubhold.com']
-const db_config = require(__dirname + '/config/config.json')[process.env.NODE_ENV]
-const fileUpload = require('express-fileupload')
 
-const MySQLStore = require('express-mysql-session')(session)
-//세션 생성에 limit이 생기거나 한계가 있으면 sequelize pool limit을 확인!
-const sessionStore = new MySQLStore(db_config)
-const sess = {
-	resave: false,
-	saveUninitialized: false,
-	secret: 'sessionscrete',
-	name: 'sessionId',
-	cookie: {
-		httpOnly: true,
-		secure: false,
-	},
-	store: sessionStore,
-	schema: {
-		columnNames: {
-			session_id: 'custom_session_id',
-			expires: 'custom_expires_column_name',
-			data: 'custom_data_column_name',
-		},
-	},
-}
-
+// 공통 function
 const sunFunctions = require('./lib/sunFunctions')
 
 // 기본 테스트용 라우터
@@ -78,6 +59,17 @@ class AppServer extends http.Server {
 		this.app.enable('trust proxy')
 
 		this.app.use(helmet())
+		// cf) https://sdy-study.tistory.com/63
+		// cf) https://github.com/helmetjs/helmet/tree/main/middlewares/content-security-policy
+		this.app.use(
+			csp({
+				directives: {
+					defaultSrc: ["'self'"],
+					styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+					scriptSrc: ["'self'", "'unsafe-inline'", 'js.example.com'],
+				},
+			}),
+		)
 
 		this.app.use(cors(corsOptions))
 
@@ -117,24 +109,67 @@ class AppServer extends http.Server {
 		// this.app.use(bodyParser())
 		this.app.use(cookieParser())
 		this.app.use('/public', express.static(__dirname + '/public'))
+
+		// db session (MySQLStore)
+		const dbConfig = require(__dirname + '/config/dbConfig.json')[process.env.NODE_ENV]
+		const MySQLStore = require('express-mysql-session')(session)
+		const sessionDbConfig = {
+			host: dbConfig.host,
+			port: dbConfig.port,
+			user: dbConfig.username,
+			password: dbConfig.password,
+			database: dbConfig.database,
+		}
+		// const dbConfig = require(__dirname + '/config/dbConfig.json')[process.env.NODE_ENV]
+		const sessionStore = new MySQLStore(sessionDbConfig)
+		const sess = {
+			resave: false,
+			saveUninitialized: false,
+			secret: 'sessionscrete',
+			name: 'sessionId',
+			cookie: {
+				httpOnly: true,
+				secure: false,
+			},
+			store: sessionStore,
+			schema: {
+				columnNames: {
+					session_id: 'custom_session_id',
+					expires: 'custom_expires_column_name',
+					data: 'custom_data_column_name',
+				},
+			},
+		}
 		this.app.use(session(sess))
 
+		// common actions for all requests
 		this.app.use(async (req, res, next) => {
-			var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-			let protocol = req.headers['x-forwarded-proto'] || req.protocol
-			// console.log("IP::" + ip)
-			// console.log("ENV::"+process.env.NODE_ENV)
-			// console.log("URL::"+req.url)
-			// console.log("PROTOCOL:"+protocol)
-			// console.log("HOST:"+protocol+"://"+req.hostname)
+			const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+			const protocol = req.headers['x-forwarded-proto'] || req.protocol
 			const now = sunFunctions.getCurDttm()
-			console.log(`ENV::${process.env.NODE_ENV} || URL::${req.url} || HOST::${protocol}://${req.hostname}`)
-			if (req.hostname == 'manage.clubhold.com') {
+
+			// console.log(`ENV::${process.env.NODE_ENV} || URI::${req.url} || HOST::${protocol}://${req.hostname}`)
+			if (req.method == 'GET') {
+				console.log(`${req.method} - ${req.url} [${ip}]`)
+			} else {
+				console.log(`${req.method} - ${req.url} [${ip}]. body: `, req.body)
+			}
+
+			// set app common variables
+			this.app.locals.appInfo = {
+				serviceTitle: process.env.SERVICE_TITLE,
+			}
+
+			// view(.ejs)에서 공통함수 사용
+			this.app.locals.sunFunctions = sunFunctions
+
+			// https redirect
+			if (req.hostname == process.env.HOSTNAME) {
 				if (protocol == 'https') {
 					next()
 				} else {
-					let from = `${protocol}://${req.hostname}${req.url}`
-					let to = `https://${req.hostname}${req.url}`
+					const from = `${protocol}://${req.hostname}${req.url}`
+					const to = `https://${req.hostname}${req.url}`
 					// log and redirect
 					console.log(`[${req.method}]: ${from} -> ${to}`)
 					res.redirect(to)
@@ -143,9 +178,6 @@ class AppServer extends http.Server {
 				next()
 			}
 		})
-
-		// view(.ejs)에서 공통함수 사용
-		this.app.locals.sunFunctions = sunFunctions
 	}
 
 	router() {
@@ -153,13 +185,12 @@ class AppServer extends http.Server {
 		this.app.use((req, res, next) => {
 			// console.warn(`request url not found. req.headers.host+url: ${req.headers.host}${req.url}`)
 			res.status(404)
-			res.render('404')
+			res.render('common/404')
 		})
 	}
 
 	dbConnection() {
-		console.log('Eviroment ::: ' + process.env.NODE_ENV)
-		console.log(`db_config: ${JSON.stringify(db_config)}`)
+		console.log('\n\nDB CONNECTION - Environment ::: ' + process.env.NODE_ENV)
 
 		// cf) sequelize - http://52.78.22.201/tutorials/expressjs/expressjs_orm_two/
 		db.sequelize

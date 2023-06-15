@@ -7,7 +7,7 @@ temp_upload
 *.pem
 
 # sequelize db설정
-config/config.json
+config/dbConfig.json
 
 # macOS
 .DS_Store

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<head>
+  <%- include('../common/common-head.ejs') %>
+
+  <style type=text/css>
+    section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <h4>Join Form</h4>
+    <label for="email">email
+      <input type="email" name="email" id="email" placeholder="email" autocomplete>
+    </label>
+    <label for="userNm">name
+      <input type="text" name="userNm" id="userNm" placeholder="name">
+    </label>
+    <label for="email">password
+      <input type="password" name="pwd" id="pwd" placeholder="password">
+    </label>
+    <button type="button" id="join" onclick="join()">join</button>
+    <button type="button" id="login" onclick="javascript:location.href='/test/login'">login</button>
+  </section>
+
+  <footer>
+    <p>AUTHOR. sjmarine97@gmail.com</p>
+  </footer>
+
+  <%- include('../common/common-script.ejs') %>
+
+  <script>
+    $(document).ready(function() {
+      setUi()
+      init()
+    })
+
+    // UI 설정
+    const setUi = () => {
+      // 
+    }
+
+    // 초기화
+    const init = () => {
+      // 테스트용
+      $('#email').val('sjmarine97@gmail.com')
+      $('#userNm').val('sjmarine97')
+      $('#pwd').val('1234')
+    }
+
+    // 회원가입
+    const join = () => {
+      const email = $('#email').val()
+      const userNm = $('#userNm').val()
+      const pwd = $('#pwd').val()
+
+      // validation
+      if (email === '') {
+        return alert('이메일을 입력해주세요.')
+      }
+      if (userNm === '') {
+        return alert('이름을 입력해주세요.')
+      }
+      if (pwd === '') {
+        return alert('패스워드를 입력해주세요.')
+      }
+
+      $.ajax({
+        url: '/test/join',
+        type: 'POST',
+        data: {
+          email: email,
+          userNm: userNm,
+          pwd: pwd,
+        },
+        success: function(data) {
+          console.log(data)
+          if (data.success === 200) {
+            alert(data.message)
+            location.href = '/test/login'
+          } else {
+            alert(data.message)
+          }
+        },
+        error: function(err) {
+          console.log(err)
+          alert(`로그인 도중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.`)
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

@@ -1,8 +1,12 @@
 == 신규 프로젝트에서 활용시
 = 기본 설정파일 수정
-package.json의 name 및 version, script 수정
+package.json의 name 및 version, script, author 수정
 ecosystem.config.js 의 app.name 수정. 배치서버이면 instances 1로 설정
-config.json(db 설정파일) 설정
+dbConfig.json(db 설정파일) 설정
+	charset은 DB에 맞추되 기본적으로 utf8_general_ci, utf8mb4_unicode_ci (이모지 등)
+	db pool은 성능에 따르되 상용서버는 100 이상
+	cf) json 대신 .js 및 .env 사용하려면 https://velog.io/@hyunju-song/sequelize%EB%A1%9C-DB%EC%85%8B%ED%8C%85%ED%95%A0-%EB%95%8C-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98-%ED%8C%8C%EC%9D%BC-%EC%84%A4%EC%A0%95-%EB%B0%8F-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+.env 설정
 
 = 기본 실행파일 수정
 app.js
@@ -10,9 +14,14 @@ app.js
 	세션 사용여부에 따른 변경
 	fileupload 사용여부에 따른 변경
 	필요시 router 추가
+	https redirect 관련 수정
 	필요시 view 추가
 	배치 수행 관련 수정 - schedule()
 /models에 model 추가
+	model파일만 추가하면 자동으로 테이블 생성. models/index.js 참고
+	모델 추가시 서버 재기동 필요
+	모델의 칼럼 변경시 수동으로 db에서 alter 필요
+/views/404 수정
 
 = 로컬개발시 (global하게 supervisor 설치 필요)
 supervisor server.js
@@ -23,7 +32,7 @@ supervisor server.js
 
 = gitignore에 포함된 파일 복사
 ecosystem.config.js
-config/config.json
+config/dbConfig.json
 .env (포트 변경)
 
 = 서버 실행
@@ -40,11 +49,13 @@ ejs 설치
 sequelize, sequelize-cli, mysql2 설치
 	npx sequelize init로 sequelize 초기화
 		자동으로 config, migrations, models, seeders 디렉토리 생성
-	config.json(db 설정파일) 설정
-helmet 설치
+	dbConfig.json(db 설정파일) 설정
+helmet, helmet-csp 설치
 express-session 설치
 express-fileupload 설치
 express-mysql-session 설치
 cookie-parser 설치
 jsonwebtoken 설치
 node-schedule 설치
+devDependencies를 위해 npm install 실행 (eslint, prettier)
+crypto-js 설치 (패스워드 암호화 등)

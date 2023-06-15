@@ -1,0 +1,19 @@
+{
+	"parser": "@babel/eslint-parser",
+	"parserOptions": {
+		"ecmaVersion": 2020
+	},
+	"extends": ["airbnb", "plugin:prettier/recommended"],
+	"plugins": ["prettier"],
+	"rules": {
+		"prettier/prettier": "error",
+		"react/prop-types": 0,
+		"object-curly-newline": 0,
+		"no-unused-vars": 0,
+		"no-else-return": 0,
+		"no-use-before-define": 0
+	},
+	"env": {
+		"browser": true
+	}
+}
