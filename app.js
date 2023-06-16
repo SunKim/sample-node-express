@@ -39,6 +39,7 @@ class AppServer extends http.Server {
 		this.stop = false
 		process.env.NODE_ENV = process.env.NODE_ENV && process.env.NODE_ENV.trim().toLowerCase() == 'production' ? 'production' : 'development'
 	}
+
 	start() {
 		this.set()
 		this.middleWare()
@@ -95,6 +96,7 @@ class AppServer extends http.Server {
 			res.header('Access-Control-Allow-Credentials', true)
 			return next()
 		})
+
 		this.app.use(
 			express.json({
 				limit: '100mb',

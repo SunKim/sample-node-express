@@ -62,8 +62,7 @@ router.post('/login', async (req, res) => {
 
 	try {
 		const user = await db.testUsers.findOne({where: {email}, raw: true})
-		console.log(`/test/login. user:`, user)
-		// console.log(`/test/login. pwd dec:`, sunFunctions.decrypt('U2FsdGVkX1+iP00LMdbypzjK+PpBxaCaWOsB3bifHY0='))
+		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
 
 		if (!user) {
 			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
