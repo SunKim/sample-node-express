@@ -1,0 +1,36 @@
+{
+	"appInfo": {
+		"title": "서비스명",
+		"description": "서비스 설명",
+		"keywords": "서비스 키워드",
+		"language": "한국어"
+	},
+	"dict": {
+		"loginForm": "로그인 폼",
+		"login": "로그인",
+		"logout": "로그아웃",
+		"join": "회원가입",
+		"email": "이메일",
+		"pwd": "비밀번호"
+	},
+	"message": {
+		"hello": "안녕하세요",
+		"thisIsTestPage": "이것은 테스트페이지 입니다.",
+		"curLangIs": "현재 언어는 %s입니다.",
+		"inputEmail": "이메일을 입력하세요",
+		"inputPwd": "비밀번호를 입력하세요"
+	},
+	"sm200": {
+		"loginSuccess": "로그인이 완료되었습니다.\n메인 페이지로 이동합니다.",
+		"joinSuccess": "회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다."
+	},
+	"sm400": {
+		"loginNotFound": "이메일 또는 비밀번호가 일치하지 않습니다.",
+		"emailExist": "이미 등록된 이메일입니다."
+	},
+	"sm500": {
+		"loginFail": "로그인 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.",
+		"joinFail": "가입 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다."
+	},
+	"test": "테스트"
+}

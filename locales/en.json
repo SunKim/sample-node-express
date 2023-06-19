@@ -1,0 +1,36 @@
+{
+	"appInfo": {
+		"title": "Service Title",
+		"description": "Service description",
+		"keywords": "Service keywords",
+		"language": "English"
+	},
+	"dict": {
+		"loginForm": "Login Form",
+		"login": "Login",
+		"logout": "Logout",
+		"join": "Join",
+		"email": "Email",
+		"pwd": "Password"
+	},
+	"message": {
+		"hello": "Hello",
+		"thisIsTestPage": "This is a test page.",
+		"curLangIs": "Current your language is %s.",
+		"inputEmail": "Please input your email address.",
+		"inputPwd": "Please input your password."
+	},
+	"sm200": {
+		"loginSuccess": "Login Successful.\nRedirect to main page.",
+		"joinSuccess": "Join Successful.\nRedirect to login page."
+	},
+	"sm400": {
+		"loginNotFound": "Could not find the email or password.",
+		"emailExist": "Email has already been occupied."
+	},
+	"sm500": {
+		"loginFail": "Error occured while trying to login.\nPlease contact us.",
+		"joinFail": "Error occured while trying to join.\nPlease contact us."
+	},
+	"test": "test"
+}

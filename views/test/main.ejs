@@ -1,5 +1,4 @@
 <%
-	const sessUserData = locals.sessUserData
 	const viewData = locals.viewData
 	const users = locals.users
 	const usersPerDates = locals.usersPerDates
@@ -23,15 +22,16 @@
 
 <body>
   <section>
-    <h1><%- viewData.title %>, <%- sessUserData.userNm %></h1>
+    <h1><%- viewData.title %>, <%- user.userNm %></h1>
 
-    <p>this is a test view :)</p>
-    <p>the title above is from the server data.</p>
+    <p><%= __('message.thisIsTestPage') %> :)</p>
+    <p><%= __('message.curLangIs', __('appInfo.language')) %></p>
 
     <button type="button" id="logout" onclick="javascript:location.href='/test/logout'">logout</button>
   </section>
 
-  <section>
+  <section class="mt40">
+    <h2>Database Connection Test</h2>
     <h4>Users</h4>
 
     <% users.forEach((user, i) => { %>
@@ -47,6 +47,14 @@
 
   <footer>
     <p>AUTHOR. sjmarine97@gmail.com</p>
+
+    <div>
+      <select id="lang" onchange="javascript:changeLang(this.value)">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="in">Bahasa Indonesia</option>
+      </select>
+    </div>
   </footer>
 
   <%- include('../common/common-script.ejs') %>
@@ -59,7 +67,8 @@
 
     // UI 설정
     const setUi = () => {
-      // 
+      // 현재 lang 표시
+      getCookie('lang') === 'en' ? $('#lang').val('en') : getCookie('lang') === 'ko' ? $('#lang').val('ko') : $('#lang').val('in')
     }
 
     // 초기화

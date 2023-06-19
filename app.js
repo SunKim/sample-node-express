@@ -9,6 +9,7 @@ const session = require('express-session')
 const path = require('path')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+const i18n = require('./i18n')
 
 // cors
 const corsOptions = {
@@ -20,6 +21,8 @@ const allowedOrigins = ['https://hold-file.s3.ap-northeast-2.amazonaws.com', 'ht
 // 공통 function
 const sunFunctions = require('./lib/sunFunctions')
 
+// 기본 라우터
+const baseRouter = require('./router/baseRouter')
 // 기본 테스트용 라우터
 const testRouter = require('./router/testRouter')
 
@@ -144,6 +147,9 @@ class AppServer extends http.Server {
 		}
 		this.app.use(session(sess))
 
+		// i18n
+		this.app.use(i18n)
+
 		// common actions for all requests
 		this.app.use(async (req, res, next) => {
 			const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
@@ -155,11 +161,6 @@ class AppServer extends http.Server {
 				console.log(`${req.method} - ${req.url} [${ip}]`)
 			} else {
 				console.log(`${req.method} - ${req.url} [${ip}]. body: `, req.body)
-			}
-
-			// set app common variables
-			this.app.locals.appInfo = {
-				serviceTitle: process.env.SERVICE_TITLE,
 			}
 
 			// view(.ejs)에서 공통함수 사용
@@ -183,6 +184,7 @@ class AppServer extends http.Server {
 	}
 
 	router() {
+		this.app.use('/', baseRouter)
 		this.app.use('/test', testRouter)
 		this.app.use((req, res, next) => {
 			// console.warn(`request url not found. req.headers.host+url: ${req.headers.host}${req.url}`)

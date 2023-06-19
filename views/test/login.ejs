@@ -16,19 +16,27 @@
 
 <body>
   <section>
-    <h4>Login Form</h4>
-    <label for="email">email
+    <h4><%= __('dict.loginForm') %></h4>
+    <label for="email"><%= __('dict.email') %>
       <input type="email" name="email" id="email" placeholder="email" autocomplete>
     </label>
-    <label for="email">password
+    <label for="email"><%= __('dict.pwd') %>
       <input type="password" name="pwd" id="pwd" placeholder="password">
     </label>
-    <button type="button" id="login" onclick="login()">login</button>
-    <button type="button" id="join" onclick="javascript:location.href='/test/join'">join</button>
+    <button type="button" id="login" onclick="login()"><%= __('dict.login') %></button>
+    <button type="button" id="join" onclick="javascript:location.href='/test/join'"><%= __('dict.join') %></button>
   </section>
 
   <footer>
     <p>AUTHOR. sjmarine97@gmail.com</p>
+
+    <div>
+      <select id="lang" onchange="javascript:changeLang(this.value)">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="in">Bahasa Indonesia</option>
+      </select>
+    </div>
   </footer>
 
   <%- include('../common/common-script.ejs') %>
@@ -41,7 +49,8 @@
 
     // UI 설정
     const setUi = () => {
-      // 
+      // 현재 lang 표시
+      getCookie('lang') === 'en' ? $('#lang').val('en') : getCookie('lang') === 'ko' ? $('#lang').val('ko') : $('#lang').val('in')
     }
 
     // 초기화
@@ -58,10 +67,10 @@
 
       // validation
       if (email === '') {
-        return alert('이메일을 입력해주세요.')
+        return alert('<%= __('message.inputEmail') %>')
       }
       if (pwd === '') {
-        return alert('패스워드를 입력해주세요.')
+        return alert('<%= __('message.inputPwd') %>')
       }
 
       $.ajax({
@@ -82,7 +91,7 @@
         },
         error: function(err) {
           console.log(err)
-          alert(`로그인 도중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.`)
+          alert(`<%= __('sm500.loginFail') %>`)
         }
       })
     }

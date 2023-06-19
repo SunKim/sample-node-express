@@ -1,0 +1,36 @@
+{
+	"appInfo": {
+		"title": "Judul Layanan",
+		"description": "Deskripsi layanan",
+		"keywords": "Kata kunci layanan",
+		"language": "Bahasa Indonesia"
+	},
+	"dict": {
+		"loginForm": "Formulir Masuk",
+		"login": "Gabung",
+		"logout": "keluar",
+		"join": "bergabung",
+		"email": "Surel",
+		"pwd": "Kata sandi"
+	},
+	"message": {
+		"hello": "Halo",
+		"thisIsTestPage": "Ini adalah halaman percobaan.",
+		"curLangIs": "Bahasa saat ini adalah %s.",
+		"inputEmail": "Masukkan email Anda",
+		"inputPwd": "Masukkan kata sandi Anda"
+	},
+	"sm200": {
+		"loginSuccess": "Login selesai.\nBuka halaman utama.",
+		"joinSuccess": "Pendaftaran keanggotaan selesai.\nBuka halaman login."
+	},
+	"sm400": {
+		"loginNotFound": "Email atau kata sandi tidak cocok.",
+		"emailExist": "Email ini telah terdaftar."
+	},
+	"sm500": {
+		"loginFail": "Terjadi kesalahan saat memproses login.\nHarap hubungi administrator.",
+		"joinFail": "Terjadi kesalahan saat memproses pendaftaran keanggotaan.\nHarap hubungi administrator."
+	},
+	"test": "tes"
+}

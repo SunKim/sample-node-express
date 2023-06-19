@@ -15,6 +15,9 @@ const checkSession = (req, res, next) => {
 
 			console.log(`checkSession - /test${req.path} - ${user.userNm}(idx: ${user.idx})`)
 
+			// session data를 locals에 자동으로 넘겨줌
+			res.locals.user = user
+
 			// req.path에 따라 분기처리 필요하면 여기서 처리
 
 			return next()
@@ -29,9 +32,8 @@ const checkSession = (req, res, next) => {
 // main page for logged in user
 router.get('/', checkSession, async (req, res) => {
 	const viewData = {
-		title: 'Hello',
+		title: res.__('message.hello'),
 	}
-	const sessUserData = getTokenData(req.session.user_token)
 	// findAll example
 	// raw: true를 줘야 result가 일반 array, object로 return
 	const users = await db.testUsers.findAll({attributes: ['idx', 'userNm'], where: {delYn: false}, raw: true})
@@ -48,7 +50,7 @@ router.get('/', checkSession, async (req, res) => {
 	const usersPerDates = await db.sequelize.query(qry, {raw: true, type: Sequelize.QueryTypes.SELECT})
 	// console.log(`/test - usersPerDates:`, usersPerDates)
 
-	return res.render('test/main', {sessUserData, viewData, users, usersPerDates})
+	return res.render('test/main', {viewData, users, usersPerDates})
 })
 
 // login page(form)
@@ -65,11 +67,11 @@ router.post('/login', async (req, res) => {
 		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
 
 		if (!user) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+			return res.send({success: 400, message: res.__('sm400.loginNotFound')})
 		}
 		const pwdEnc = sunFunctions.encrypt(pwd)
 		if (sunFunctions.decrypt(user.pwd) !== pwd) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+			return res.send({success: 400, message: res.__('sm400.loginNotFound')})
 		}
 
 		// const token = createToken(user)
@@ -80,10 +82,10 @@ router.post('/login', async (req, res) => {
 		// update lastLoginDttm
 		await db.testUsers.update({lastLoginDttm: new Date()}, {where: {idx: user.idx}})
 
-		return res.send({success: 200, message: '로그인이 완료되었습니다.\n메인 페이지로 이동합니다.'})
+		return res.send({success: 200, message: res.__('sm200.loginSuccess')})
 	} catch (e) {
 		console.error(e)
-		return res.send({success: 500, message: '로그인 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+		return res.send({success: 500, message: res.__('sm200.loginFail')})
 	}
 })
 
@@ -106,7 +108,7 @@ router.post('/join', async (req, res) => {
 	try {
 		const user = await db.testUsers.findOne({where: {email}})
 		if (user) {
-			return res.send({success: 400, message: '이미 가입된 이메일입니다.'})
+			return res.send({success: 400, message: res.__('sm400.emailExist')})
 		}
 		console.log(`/test/join. pwd enc:`, sunFunctions.encrypt(pwd))
 
@@ -117,10 +119,10 @@ router.post('/join', async (req, res) => {
 		}
 		const newUserObj = await db.testUsers.create(newUser)
 
-		return res.send({success: 200, message: '회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.'})
+		return res.send({success: 200, message: res.__('sm200.joinSuccess')})
 	} catch (e) {
 		console.error(e)
-		return res.send({success: 500, message: '가입 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+		return res.send({success: 500, message: res.__('sm500.joinFail')})
 	}
 })
 
