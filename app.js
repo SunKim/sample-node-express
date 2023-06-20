@@ -147,7 +147,9 @@ class AppServer extends http.Server {
 		}
 		this.app.use(session(sess))
 
-		// i18n
+		// i18n. (설정은 i18n.js 참고)
+		// https://velog.io/@nhj2927/Node-i18n%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%8B%A4%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90
+		// https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=cck223&logNo=220974896622
 		this.app.use(i18n)
 
 		// common actions for all requests
