@@ -124,4 +124,24 @@ router.post('/join', async (req, res) => {
 	}
 })
 
+// test api
+router.post('/api', async (req, res) => {
+	console.log(`/test/api - req.body:`, req.body)
+	const {sampleParam1, sampleParam2, appVerInfo, deviceInfo} = req.body
+
+	// validation
+	if (!sampleParam1 || !sampleParam2) {
+		return res.send({success: 200, message: '필수 파라미터가 누락되었습니다.'})
+	}
+
+	// process
+	try {
+		// 테스트로 원래 받았던 param 그대로 return
+		return res.send({success: 200, sampleParam1, sampleParam2, appVerInfo, deviceInfo})
+	} catch (e) {
+		console.error(e)
+		return res.send({success: 500, message: '가입 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+	}
+})
+
 module.exports = router
