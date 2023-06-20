@@ -26,11 +26,13 @@
 	},
 	"sm400": {
 		"loginNotFound": "Could not find the email or password.",
-		"emailExist": "Email has already been occupied."
+		"emailExist": "Email has already been occupied.",
+		"notEnoughParam": "Not enough parameters."
 	},
 	"sm500": {
 		"loginFail": "Error occured while trying to login.\nPlease contact us.",
-		"joinFail": "Error occured while trying to join.\nPlease contact us."
+		"joinFail": "Error occured while trying to join.\nPlease contact us.",
+		"apiFail": "Error occured while processing API.\nPlease contact us."
 	},
 	"test": "test"
 }

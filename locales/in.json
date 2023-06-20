@@ -26,11 +26,13 @@
 	},
 	"sm400": {
 		"loginNotFound": "Email atau kata sandi tidak cocok.",
-		"emailExist": "Email ini telah terdaftar."
+		"emailExist": "Email ini telah terdaftar.",
+		"notEnoughParam": "Parameter wajib tidak ada."
 	},
 	"sm500": {
 		"loginFail": "Terjadi kesalahan saat memproses login.\nHarap hubungi administrator.",
-		"joinFail": "Terjadi kesalahan saat memproses pendaftaran keanggotaan.\nHarap hubungi administrator."
+		"joinFail": "Terjadi kesalahan saat memproses pendaftaran keanggotaan.\nHarap hubungi administrator.",
+		"apiFail": "Terjadi kesalahan saat memproses API.\nHarap hubungi administrator."
 	},
 	"test": "tes"
 }

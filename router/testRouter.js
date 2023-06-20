@@ -133,7 +133,7 @@ router.post('/api', async (req, res) => {
 
 	// validation
 	if (!sampleParam1 || !sampleParam2) {
-		return res.send({success: 400, message: '필수 파라미터가 누락되었습니다.'})
+		return res.send({success: 400, message: res.__('sm400.notEnoughParam')})
 	}
 
 	// process
@@ -142,7 +142,7 @@ router.post('/api', async (req, res) => {
 		return res.send({success: 200, sampleParam1, sampleParam2, appVerInfo, deviceInfo})
 	} catch (e) {
 		console.error(e)
-		return res.send({success: 500, message: 'API 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+		return res.send({success: 500, message: res.__('sm500.apiFail')})
 	}
 })
 
