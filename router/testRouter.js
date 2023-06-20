@@ -142,7 +142,7 @@ router.post('/api', async (req, res) => {
 		return res.send({success: 200, sampleParam1, sampleParam2, appVerInfo, deviceInfo})
 	} catch (e) {
 		console.error(e)
-		return res.send({success: 500, message: '가입 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+		return res.send({success: 500, message: 'API 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
 	}
 })
 
