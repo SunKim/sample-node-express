@@ -133,7 +133,7 @@ router.post('/api', async (req, res) => {
 
 	// validation
 	if (!sampleParam1 || !sampleParam2) {
-		return res.send({success: 200, message: '필수 파라미터가 누락되었습니다.'})
+		return res.send({success: 400, message: '필수 파라미터가 누락되었습니다.'})
 	}
 
 	// process
