@@ -27,7 +27,7 @@
     <p><%= __('message.thisIsTestPage') %> :)</p>
     <p><%= __('message.curLangIs', __('appInfo.language')) %></p>
 
-    <button type="button" id="logout" onclick="javascript:location.href='/test/logout'">logout</button>
+    <button type="button" id="logout" onclick="javascript:location.href='/test/logout'"><%= __('dict.logout') %></button>
   </section>
 
   <section class="mt40">
@@ -38,7 +38,7 @@
     <p><%= user.userNm %></p>
     <% }) %>
 
-    <h4>users Per Dates</h4>
+    <h4>Users Per Dates</h4>
 
     <% usersPerDates.forEach((dt, i) => { %>
     <p><%= dt.joinDt %>: <%= dt.userCnt %></p>
@@ -46,7 +46,7 @@
   </section>
 
   <footer>
-    <p>AUTHOR. sjmarine97@gmail.com</p>
+    <p>AUTHOR. seonjung.kim@cvrn.club</p>
 
     <div>
       <select id="lang" onchange="javascript:changeLang(this.value)">

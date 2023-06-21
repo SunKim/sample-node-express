@@ -128,7 +128,7 @@ router.post('/join', async (req, res) => {
 
 // test api
 router.post('/api', async (req, res) => {
-	console.log(`/test/api - req.body:`, req.body)
+	// console.log(`/test/api - req.body:`, req.body)
 	const {sampleParam1, sampleParam2, appVerInfo, deviceInfo} = req.body
 
 	// validation
