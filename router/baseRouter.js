@@ -25,4 +25,12 @@ router.get('/in', (req, res) => {
 	return res.redirect(req.query.uri || 'back')
 })
 
+router.get('/th', (req, res) => {
+	// console.log(`/in - req.cookies:`, req.cookies)
+	// console.log(`/in - req.query:`, req.query)
+
+	res.cookie('lang', 'th')
+	return res.redirect(req.query.uri || 'back')
+})
+
 module.exports = router

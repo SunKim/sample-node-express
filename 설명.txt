@@ -59,3 +59,10 @@ jsonwebtoken 설치
 node-schedule 설치
 devDependencies를 위해 npm install 실행 (eslint, prettier)
 crypto-js 설치 (패스워드 암호화 등)
+
+
+
+== i18n
+chat gpt에 번역 요청시
+아래의 javascript object 형식에서 object의 value 값이 현재 영어로 되어있는데 태국어로 번역해줘.
+아래의 json 형식에서 object의 value 값이 현재 한국어로 되어있는데 태국어로 번역해줘.

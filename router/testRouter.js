@@ -7,6 +7,7 @@ const i18nLangs = {
 	en: require(__dirname + '/../locales/en.json'),
 	ko: require(__dirname + '/../locales/ko.json'),
 	in: require(__dirname + '/../locales/in.json'),
+	th: require(__dirname + '/../locales/th.json'),
 }
 
 const sunFunctions = require('../lib/sunFunctions')

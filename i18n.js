@@ -3,7 +3,7 @@ const i18n = require('i18n')
 // i18n options
 i18n.configure({
 	// languages
-	locales: ['ko', 'en', 'in'],
+	locales: ['ko', 'en', 'in', 'th'],
 
 	// set up language directory. default: ./locales
 	directory: __dirname + '/locales',

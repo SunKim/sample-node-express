@@ -35,6 +35,7 @@
         <option value="en">English</option>
         <option value="ko">한국어</option>
         <option value="in">Bahasa Indonesia</option>
+        <option value="th">แบบไทย</option>
       </select>
     </div>
   </footer>
@@ -50,7 +51,7 @@
     // UI 설정
     const setUi = () => {
       // 현재 lang 표시
-      getCookie('lang') === 'en' ? $('#lang').val('en') : getCookie('lang') === 'ko' ? $('#lang').val('ko') : $('#lang').val('in')
+      getCookie('lang') === 'en' ? $('#lang').val('en') : getCookie('lang') === 'ko' ? $('#lang').val('ko') : getCookie('lang') === 'in' ? $('#lang').val('in') : $('#lang').val('th')
     }
 
     // 초기화
