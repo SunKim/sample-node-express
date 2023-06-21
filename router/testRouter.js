@@ -3,6 +3,11 @@ const router = express.Router()
 const db = require('../models/index')
 const axios = require('axios')
 const Sequelize = require('sequelize')
+const i18nLangs = {
+	en: require(__dirname + '/../locales/en.json'),
+	ko: require(__dirname + '/../locales/ko.json'),
+	in: require(__dirname + '/../locales/in.json'),
+}
 
 const sunFunctions = require('../lib/sunFunctions')
 const {createToken, checkToken, getTokenData} = require('../lib/jwtHelper')
@@ -127,9 +132,10 @@ router.post('/join', async (req, res) => {
 })
 
 // test api
+// 서버의 경우 cookie에 저장해서 처리하는데 api는 어떤 언어로 요청이 올지 모름. client에서 locale을 보내주고 그에 맞춰 메세지 보내줌.
 router.post('/api', async (req, res) => {
 	// console.log(`/test/api - req.body:`, req.body)
-	const {sampleParam1, sampleParam2, appVerInfo, deviceInfo} = req.body
+	const {sampleParam1, sampleParam2, appVerInfo, deviceInfo, locale} = req.body
 
 	// validation
 	if (!sampleParam1 || !sampleParam2) {
@@ -138,8 +144,11 @@ router.post('/api', async (req, res) => {
 
 	// process
 	try {
+		// api의 경우 cookie에 저장된 값이 아니라 client에서 보내준 locale 사용.
+		const testData = i18nLangs[locale || 'en'].message.thisIsTestPage
+
 		// 테스트로 원래 받았던 param 그대로 return
-		return res.send({success: 200, sampleParam1, sampleParam2, appVerInfo, deviceInfo})
+		return res.send({success: 200, testData, sampleParam1, sampleParam2, appVerInfo, deviceInfo})
 	} catch (e) {
 		console.error(e)
 		return res.send({success: 500, message: res.__('sm500.apiFail')})
