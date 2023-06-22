@@ -14,10 +14,10 @@ const sunFunctions = require('../lib/sunFunctions')
 const {createToken, checkToken, getTokenData} = require('../lib/jwtHelper')
 
 const checkSession = (req, res, next) => {
-	if (req.session.user_token) {
-		const check = checkToken(req.session.user_token)
+	if (req.session.userToken) {
+		const check = checkToken(req.session.userToken)
 		if (check) {
-			const user = getTokenData(req.session.user_token)
+			const user = getTokenData(req.session.userToken)
 
 			console.log(`checkSession - /test${req.path} - ${user.userNm}(idx: ${user.idx})`)
 
@@ -82,7 +82,7 @@ router.post('/login', async (req, res) => {
 
 		// const token = createToken(user)
 		const token = createToken({idx: user.idx, userNm: user.userNm, email: user.email})
-		req.session.user_token = token
+		req.session.userToken = token
 		req.session.save()
 
 		// update lastLoginDttm
@@ -159,57 +159,30 @@ router.post('/api', async (req, res) => {
 
 // test api login
 router.post('/api/login', async (req, res) => {
-	const {email, pwd, appVerInfo, deviceInfo} = req.body
+	const {email, pwd, appVerInfo, deviceInfo, locale} = req.body
 
 	try {
 		const user = await db.testUsers.findOne({where: {email, delYn: 0}, raw: true})
 		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
 
 		if (!user) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+			return res.send({success: 400, message: i18nLangs[locale || 'en'].sm400.loginNotFound})
 		}
 		if (sunFunctions.decrypt(user.pwd) !== pwd) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+			return res.send({success: 400, message: i18nLangs[locale || 'en'].sm400.loginNotFound})
 		}
 
 		// const token = createToken(user)
 		const jwt = createToken({idx: user.idx, userNm: user.userNm, email: user.email})
+		user.jwt = jwt
 
 		// update lastLoginDttm
 		await db.testUsers.update({lastLoginDttm: new Date()}, {where: {idx: user.idx}})
 
-		return res.send({success: 200, jwt})
+		return res.send({success: 200, user})
 	} catch (e) {
 		console.error(e)
-		return res.send({success: 500, message: '로그인 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
-	}
-})
-
-// test api login
-router.post('/api/login', async (req, res) => {
-	const {email, pwd, appVerInfo, deviceInfo} = req.body
-
-	try {
-		const user = await db.testUsers.findOne({where: {email, delYn: 0}, raw: true})
-		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
-
-		if (!user) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
-		}
-		if (sunFunctions.decrypt(user.pwd) !== pwd) {
-			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
-		}
-
-		// const token = createToken(user)
-		const jwt = createToken({idx: user.idx, userNm: user.userNm, email: user.email})
-
-		// update lastLoginDttm
-		await db.testUsers.update({lastLoginDttm: new Date()}, {where: {idx: user.idx}})
-
-		return res.send({success: 200, jwt})
-	} catch (e) {
-		console.error(e)
-		return res.send({success: 500, message: res.__('sm500.apiFail')})
+		return res.send({success: 500, message: i18nLangs[locale || 'en'].sm500.apiFail})
 	}
 })
 
