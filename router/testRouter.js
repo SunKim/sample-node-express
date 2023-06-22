@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 	const {email, pwd} = req.body
 
 	try {
-		const user = await db.testUsers.findOne({where: {email}, raw: true})
+		const user = await db.testUsers.findOne({where: {email, delYn: 0}, raw: true})
 		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
 
 		if (!user) {
@@ -126,7 +126,6 @@ router.post('/join', async (req, res) => {
 
 // test api
 router.post('/api', async (req, res) => {
-	console.log(`/test/api - req.body:`, req.body)
 	const {sampleParam1, sampleParam2, appVerInfo, deviceInfo} = req.body
 
 	// validation
@@ -141,6 +140,34 @@ router.post('/api', async (req, res) => {
 	} catch (e) {
 		console.error(e)
 		return res.send({success: 500, message: 'API 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
+	}
+})
+
+// test api login
+router.post('/api/login', async (req, res) => {
+	const {email, pwd, appVerInfo, deviceInfo} = req.body
+
+	try {
+		const user = await db.testUsers.findOne({where: {email, delYn: 0}, raw: true})
+		// console.log(`/test/login. acceptsLanguages: ${JSON.stringify(req.acceptsLanguages())}`)
+
+		if (!user) {
+			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+		}
+		if (sunFunctions.decrypt(user.pwd) !== pwd) {
+			return res.send({success: 400, message: '이메일 또는 비밀번호가 일치하지 않습니다.'})
+		}
+
+		// const token = createToken(user)
+		const jwt = createToken({idx: user.idx, userNm: user.userNm, email: user.email})
+
+		// update lastLoginDttm
+		await db.testUsers.update({lastLoginDttm: new Date()}, {where: {idx: user.idx}})
+
+		return res.send({success: 200, jwt})
+	} catch (e) {
+		console.error(e)
+		return res.send({success: 500, message: '로그인 처리중 오류가 발생했습니다.\n관리자에게 문의 바랍니다.'})
 	}
 })
 
